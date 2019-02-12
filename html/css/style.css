@@ -1,0 +1,50 @@
+.container {
+    margin-top: 100px;
+    margin-right: 150px;
+    margin-left: 100px;
+    box-shadow: 4px 7px 15px #cccccc
+}
+
+.ch-block {
+    display: flex;
+    border: 1px solid #f2f2f2;
+}
+
+.ch-block>* {
+    flex: 1;
+    padding: 10px
+}
+
+.ch-block ul {
+    display: flex;
+}
+ 
+ ul li:after {
+  content: '/';
+  padding: 10px;
+}
+
+li:last-child:after {
+    content: "";
+}
+
+.space-slash > * {
+    padding: 0x 10x;
+}
+
+.pay-block {
+    flex: 2;
+}
+
+.ca-block {
+    flex: 1;
+    background-color: #cccccc
+}
+
+.content-right {
+    text-align: end
+}
+
+.content-bold {
+    font-weight: bold;
+}
