@@ -1,9 +1,8 @@
 const style = {
   base: {
-    width: '96%',
-    margin: '1px',
-    padding: '7px',
-    border: '1px solid',
+    width: '80%',
+    margin: '10px',
+    padding: '5px',
     borderRadius: '5px',
   },
   error: {

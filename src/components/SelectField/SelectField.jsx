@@ -4,14 +4,17 @@ import style from './style';
 
 const SelectField = (props) => {
   const {
-    onchange, value, options, error, defaultText, ...rest } = props;
+    onchange, value, options, error, defaultText, ...rest
+  } = props;
+  console.log('option', options);
+
   return (
     <>
-      <select {...rest} value={value} {...error} style={style.base} onChange={onChange} >
+      <select {...rest} value={value} {...error} style={style.base} onChange={onchange}>
         <option value="">{defaultText}</option>
         {options.map(option => (
-          <option key={option.label} value={option.value}>
-            {option.value}
+          <option key={option.label} value={option.label}>
+            {option.label}
           </option>
         ))}
       </select>
@@ -21,6 +24,7 @@ const SelectField = (props) => {
 SelectField.propTypes = {
   options: PropTypes.arrayOf(PropTypes.objectOf),
   value: PropTypes.string,
+  valueSport: PropTypes.string,
   onchange: PropTypes.func,
   error: PropTypes.string,
   defaultText: PropTypes.string,
@@ -28,8 +32,9 @@ SelectField.propTypes = {
 
 SelectField.defaultProps = {
   options: [{ id: 0, value: 'select' }],
-  onchange: () => {},
+  onchange: () => { },
   value: '',
+  valueSport: '',
   error: '',
   defaultText: 'Select',
 };
