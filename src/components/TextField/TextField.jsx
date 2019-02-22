@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import style from './style';
 
 const TextField = (props) => {
-  const { error, ...rest } = props;
-
+  const {
+    error, value, ...rest
+  } = props;
   const errorOptional = error ? style.errorStyle : {};
   return (
     <>
@@ -15,12 +16,12 @@ const TextField = (props) => {
 };
 TextField.propTypes = {
   error: PropTypes.string,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
 };
 TextField.defaultProps = {
   error: '',
-  onChange: () => { },
+  value: '',
 };
-
 
 export default TextField;

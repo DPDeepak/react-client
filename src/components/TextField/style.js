@@ -1,6 +1,6 @@
 const style = {
   basic: {
-    width: '90%',
+    width: '80%',
     margin: '10px',
     padding: '5px',
     borderRadius: '5px',
