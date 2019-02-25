@@ -6,7 +6,6 @@ const SelectField = (props) => {
   const {
     onchange, value, options, error, defaultText, ...rest
   } = props;
-  console.log('option', options);
 
   return (
     <>

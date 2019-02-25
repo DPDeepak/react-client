@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TextField from '../../components';
 import SelectField from '../../components/SelectField';
-import { sportSelect, Cricket, Football } from '../../configs/constants';
+import * as options from '../../configs/constants';
 import RadioGroup from '../../components/RadioGroup';
 import style from './style';
 
@@ -11,8 +11,6 @@ class InputDemo extends Component {
     this.state = {
       value: '',
       valueSport: '',
-      Cricket: '',
-      Football: '',
       valueRadio: '',
     };
   }
@@ -26,8 +24,6 @@ class InputDemo extends Component {
   onSportChangeHandler = (event) => {
     this.setState({
       valueSport: event.target.value,
-      Cricket: '',
-      Football: '',
     });
   }
 
@@ -41,29 +37,22 @@ class InputDemo extends Component {
 
   render() {
     const { value, valueSport, valueRadio } = this.state;
-    console.log('--------', this.state);
 
-    let result = 0;
-    if (valueSport === 'Cricket') {
-      result = Cricket;
-    } else if (valueSport === 'Football') {
-      result = Football;
-    }
     return (
       <div>
         <div>
           <TextField value={value} onchange={this.onChangeHandler} />
           <SelectField
-            options={sportSelect}
+            options={options.sportSelect}
             value={valueSport}
             onchange={this.onSportChangeHandler}
           />
         </div>
         <div>
           {
-            (result) ? (
+            (valueSport) ? (
               <RadioGroup
-                options={result}
+                options={options[valueSport]}
                 value={valueRadio}
                 style={style}
                 onchange={this.onRadioChangeHandler}
