@@ -23,6 +23,7 @@ SelectField.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
+
   defaultText: PropTypes.string,
 };
 
