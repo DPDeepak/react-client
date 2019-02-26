@@ -4,7 +4,6 @@ import TextField from '../../components';
 import SelectField from '../../components/SelectField';
 import { sportSelect, Cricket, Football } from '../../configs/constants';
 import RadioGroup from '../../components/RadioGroup';
-import style from './style';
 import Button from '../../components/Button';
 
 const schema = yup.object().shape({
