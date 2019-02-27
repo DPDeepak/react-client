@@ -24,6 +24,7 @@ Button.defaultProps = {
   color: '',
   style: {},
   disabled: false,
+
 };
 
 export default Button;

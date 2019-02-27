@@ -135,6 +135,7 @@ class InputDemo extends Component {
                 options={result}
                 onChange={this.onChangeHandler('player')}
                 onBlur={this.getError('player')}
+
               />
             )
               : ''

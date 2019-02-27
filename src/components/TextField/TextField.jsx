@@ -9,7 +9,7 @@ const TextField = (props) => {
   const errorOptional = error ? style.errorStyle : {};
   return (
     <>
-      <input type="text" {...rest} style={{ ...style.basic, ...errorOptional }} />
+      <input type="text" {...rest} style={{ ...style.basic, ...errorOptional }} value={value} onChange={onchange} />
       {error ? <p style={{ color: 'red' }}>{error}</p> : ''}
     </>
   );

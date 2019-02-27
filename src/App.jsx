@@ -7,6 +7,5 @@ const App = () => (
   <MuiThemeProvider theme={theme}>
     <ChildrenDemo />
   </MuiThemeProvider>
-
 );
 export default App;
