@@ -29,6 +29,7 @@ SelectField.propTypes = {
 SelectField.defaultProps = {
   options: [],
   value: '',
+  valueSport: '',
   error: '',
   defaultText: 'Select',
 };
