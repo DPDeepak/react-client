@@ -47,7 +47,7 @@ class InputDemo extends Component {
 
   getError = field => () => {
     const {
-      name, sport, player, Err, hasError
+      name, sport, player, Err, hasError,
     } = this.state;
     schema.validate({
       name, sport, player,

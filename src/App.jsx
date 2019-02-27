@@ -4,7 +4,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import theme from './theme';
 import ChildrenDemo from './pages/ChildrenDemo/ChildrenDemo';
 import AddDialog, { Trainee } from './pages/Trainee';
-import Navbar from './pages/components';
+import Navbar from './layouts/components/Navbar';
 import Login from './pages/Login';
 
 
