@@ -47,7 +47,9 @@ class InputDemo extends Component {
   }
 
   getError = field => () => {
-    const { name, sport, player, Err, hasError } = this.state;
+    const {
+      name, sport, player, Err, hasError
+    } = this.state;
     schema.validate({
       name, sport, player,
     }, { abortEarly: false })
@@ -103,7 +105,7 @@ class InputDemo extends Component {
   render() {
 
     const {
-      sport, hasError, Err, name,
+      sport, hasError, Err, name
     } = this.state;
 
     let result = 0;
@@ -115,7 +117,7 @@ class InputDemo extends Component {
     return (
       <div>
         <div>
-          <TextField onChange={this.onChangeHandler('name')} onBlur={this.getError('name')} error={Err.name} value={name} />
+         <TextField onChange={this.onChangeHandler('name')} onBlur={this.getError('name')} error={Err.name} value={name} />
           <h3>Select the game you play!</h3>
           <SelectField
             error={Err.sport}

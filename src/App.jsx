@@ -1,13 +1,11 @@
 import React from 'react';
-// import TextFieldDemo from './pages';
-import InputDemo from './pages/InputDemo/InputDemo';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import theme from './theme';
+import ChildrenDemo from './pages/ChildrenDemo/ChildrenDemo';
 
 const App = () => (
-  <div className="App">
-    {/* <TextFieldDemo /> */}
-    <h3>Name</h3>
-    <InputDemo />
-
-  </div>
+  <MuiThemeProvider theme={theme}>
+    <ChildrenDemo />
+  </MuiThemeProvider>
 );
 export default App;
