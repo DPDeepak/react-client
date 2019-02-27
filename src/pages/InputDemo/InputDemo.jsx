@@ -103,7 +103,7 @@ class InputDemo extends Component {
   render() {
 
     const {
-      sport, hasError, Err,
+      sport, hasError, Err, name,
     } = this.state;
 
     let result = 0;
@@ -115,7 +115,7 @@ class InputDemo extends Component {
     return (
       <div>
         <div>
-          <TextField onChange={this.onChangeHandler('name')} onBlur={this.getError('name')} error={Err.name} />
+          <TextField onChange={this.onChangeHandler('name')} onBlur={this.getError('name')} error={Err.name} value={name} />
           <h3>Select the game you play!</h3>
           <SelectField
             error={Err.sport}
