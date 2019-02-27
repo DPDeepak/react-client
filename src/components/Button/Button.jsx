@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Style from './style';
 
 const Button = (props) => {
-  const { disabled } = this.props;
+  const { disabled, color, ...rest } = props;
+  console.log(rest);
   return (
-    <button type="button">
-      cancel
-    </button>
+    <>
+      <input type="submit" {...rest} disabled={disabled} style={{ ...Style, ...color }} />
+    </>
   );
 };
 
@@ -19,9 +21,9 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  color: 'primary',
+  color: '',
   style: {},
-  disabled: true,
+  disabled: false,
 };
 
 export default Button;
