@@ -5,6 +5,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
+import { Trainee } from '../../../pages/Trainee';
+import InputDemo from '../../../pages/InputDemo';
+import ChildrenDemo from '../../../pages/ChildrenDemo';
+import TextField from '../../../components';
 
 const styles = {
   root: {
@@ -31,11 +37,19 @@ function Navbar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             Trainee Portal
           </Typography>
-          <Button color="inherit">Trainee</Button>
-          <Button color="inherit">TextField Demo</Button>
-          <Button color="inherit">Input Demo</Button>
-          <Button color="inherit">Children Demo</Button>
-          <Button color="inherit" className={classes.loginButton}>Login</Button>
+          <Link color="inherit" component={RouterLink} to="/trainee">
+            <Button color="inherit">Trainee</Button>
+          </Link>
+          <Link color="inherit" component={RouterLink} to="/text-field">
+            <Button color="inherit">TextField Demo</Button>
+          </Link>
+          <Link color="inherit" component={RouterLink} to="/input-demo">
+            <Button color="inherit">Input Demo</Button>
+          </Link>
+          <Link color="inherit" component={RouterLink} to="/children-demo">
+            <Button color="inherit">Children Demo</Button>
+          </Link>
+          <Button color="inherit" className={classes.loginButton}>Logout</Button>
         </Toolbar>
       </AppBar>
       {children}
