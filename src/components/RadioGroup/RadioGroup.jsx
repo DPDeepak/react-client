@@ -11,6 +11,7 @@ const RadioGroup = (props) => {
         <div>
           <label htmlFor={option.label}>
             <input type="radio" value={option.label} name="disk" {...rest} key={option.label} />
+
             {option.label}
           </label>
         </div>
