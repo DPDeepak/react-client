@@ -13,6 +13,7 @@ const SelectField = (props) => {
         {
           options.map(option => <option key={option.value} value={option.label}>{option.label}</option>)
         }
+
       </select>
       {error ? <p style={{ color: 'red' }}>{error}</p> : ''}
     </>
@@ -30,6 +31,7 @@ SelectField.propTypes = {
 SelectField.defaultProps = {
   options: [],
   value: '',
+  valueSport: '',
   error: '',
   defaultText: 'Select',
 };
