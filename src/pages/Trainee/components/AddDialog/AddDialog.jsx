@@ -42,8 +42,7 @@ const defaultProps = {
   open: false,
   classes: {},
 };
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-
+const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*/;
 class AddDialog extends React.Component {
   schema = yup.object().shape({
     name: yup
@@ -51,8 +50,8 @@ class AddDialog extends React.Component {
       .required(),
     email: yup.string().email().required(),
     password: yup.string()
-      .matches(passwordRegex, 'Must contain 8 characters, at least one uppercase letter, one lowercase letter and one number')
-      .min(8)
+      .matches(passwordRegex, 'Must contain at least one uppercase letter, one lowercase letter and one number')
+      .min(8, 'Must contain 8 atleast characters')
       .required(),
     confirmPassword: yup.string()
       .oneOf([yup.ref('password'), null], 'Passwords must match').required().label('confirm password'),
