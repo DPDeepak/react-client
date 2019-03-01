@@ -62,7 +62,7 @@ function MediaControlCard(props) {
         <div style={{ textAlign: 'center', marginTop: 10 }}>
           <Button className={classes.button} variant="contained" onClick={() => { props.history.push('/trainee') }}>
             Back
-        </Button>
+          </Button>
         </div>
       </>
     );

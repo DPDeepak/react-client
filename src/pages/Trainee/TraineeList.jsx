@@ -2,7 +2,10 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import AddDialog from './components';
-import TraineeDetail from './TraineeDetail1';
+import TraineeDetail from './TraineeDetail';
+import TraineeTable from './TraineeTable';
+import { trainees } from './data/trainees';
+import { column } from './data/column';
 
 class TraineeList extends React.Component {
   state = {
@@ -23,37 +26,30 @@ class TraineeList extends React.Component {
   };
 
   render() {
-    console.log('-----------26-- trainee list-----', this);
-
     const { open } = this.state;
     return (
       <>
         <div>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={this.handleClickOpen}
-          >
-            Add Trainee
-          </Button>
+          <div style={{ textAlign: 'right', marginTop: 10 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={this.handleClickOpen}
+            >
+              Add Trainee
+            </Button>
+          </div>
           <AddDialog open={open} onClose={this.handleClose} onSubmit={this.handleSubmit} />
+          <TraineeTable data={trainees} column={column} />
+
           <div>
             <ul>
-              <li>
-                <Link to="/trainee/5c6c47af7740654f0915fac9">Sachin Tendulkar</Link>
-              </li>
-              <li>
-                <Link to="/trainee/5c6c47af7740654f0455fac9">Virat Kohli</Link>
-              </li>
-              <li>
-                <Link to="/trainee/5c6567af7740654f0915fac9">M.S. Dhoni</Link>
-              </li>
-              <li>
-                <Link to="/trainee/5c6c47af7747854f0915fac9">Rohit Sharma</Link>
-              </li>
-              <li>
-                <Link to="/trainee/5c6c47af7740654f0915876c9">Bumrah</Link>
-              </li>
+              {trainees.map(trainee => (
+                <li>
+                  <Link to={`/trainee/${trainee.id}`}>{trainee.name}</Link>
+                </li>
+              ))
+              }
             </ul>
           </div>
 
