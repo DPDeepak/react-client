@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Match, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Match, Redirect, Switch, withRouter } from 'react-router-dom'
 import PrivateLayout from '../layouts/PrivateLayout'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -7,13 +7,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={matchProps => (
-        <>
-          <PrivateLayout>
-            <Component {...matchProps} />
-          </PrivateLayout>
-        </>
+        <PrivateLayout>
+          <Component {...matchProps} />
+        </PrivateLayout>
       )}
     />
   );
 };
-export default PrivateRoute;
+export default withRouter(PrivateRoute);

@@ -22,6 +22,8 @@ export default class Trainee extends React.Component {
 
   render() {
     const { open } = this.state;
+    console.log('---------', this.props);
+
     return (
       <>
         <div>
@@ -38,4 +40,3 @@ export default class Trainee extends React.Component {
     );
   }
 }
-export { Trainee };
