@@ -16,9 +16,10 @@ const Math = (props) => {
   } = props;
   const result = calculate(first, second, operator);
 
-  return (
-    children(first, second, operator, result)
-  );
+  if (children) {
+    return children(first, second, operator, result);
+  }
+  return `${first} ${operator} ${second} = ${result}`;
 };
 
 Math.propTypes = {
@@ -29,7 +30,7 @@ Math.propTypes = {
 };
 
 Math.defaultProps = {
-  children: () => { },
+  children: null,
 };
 
 export default Math;
