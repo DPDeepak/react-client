@@ -317,10 +317,10 @@ class AddDialog extends React.Component {
                   Submit
                 </Button>
               ) : (
-                  <Button onClick={this.handleSubmit} color="primary" disabled>
+                <Button onClick={this.handleSubmit} color="primary" disabled>
                     Submit
                 </Button>
-                )
+              )
             }
           </DialogActions>
         </Dialog>
