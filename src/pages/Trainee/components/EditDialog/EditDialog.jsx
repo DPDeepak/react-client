@@ -12,9 +12,7 @@ import Button from '@material-ui/core/Button';
 import {
   Person, Email,
 } from '@material-ui/icons';
-import * as yup from 'yup';
-import MyContext from '../../../../contexts';
-
+import { SnackbarConsumer } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
 const styles = theme => ({
   textField: {
@@ -74,10 +72,6 @@ class EditDialog extends React.Component {
     const { buttonStatus } = this.state;
     return (
       <>
-        <MyContext.Consumer>
-          {(handleSnack) => {
-            console.log('-------79-----', handleSnack);
-            return (
               <Dialog
                 fullWidth
                 maxWidth="md"
@@ -125,19 +119,21 @@ class EditDialog extends React.Component {
                   <Button onClick={close} color="primary">
                     Cancel
                   </Button>
+              <SnackbarConsumer>
+                  {(openSnackBar) => {
+                 console.log('-------79-----', openSnackBar);
                   <Button
-                    onClick={() => handleSnack('error', 'Not successful')
+                    onClick={() =>{ this.handleSubmit(); openSnackBar('error', 'Not successful')}
                     }
                     color="primary"
                     disabled={buttonStatus}
                   >
                     Submit
                   </Button>
+          }}
+        </SnackbarConsumer>
                 </DialogActions>
               </Dialog>
-            );
-          }}
-        </MyContext.Consumer>
       </>
     );
   }
