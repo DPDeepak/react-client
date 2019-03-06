@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import {
   Person, Email,
 } from '@material-ui/icons';
 import * as yup from 'yup';
+import MyContext from '../../../../contexts';
 
 
 const styles = theme => ({
@@ -68,65 +66,78 @@ class EditDialog extends React.Component {
     this.setState({ buttonStatus: true });
     close(false);
   };
-  ;
 
   render() {
-    const { open, classes, close, detail } = this.props;
+    const {
+      open, classes, close, detail,
+    } = this.props;
     const { buttonStatus } = this.state;
     return (
       <>
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={open}
-          onClose={close}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Edit Trainee</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Enter your trainee details
-            </DialogContentText>
-            <TextField
-              fullWidth
-              id="outlined-name"
-              label="Name"
-              value={detail.name}
-              // className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              onChange={this.handleChange('name')}
-              // onBlur={this.handleOnBlur('name')}
-              InputProps={{
-                startAdornment: <InputAdornment position="start"><Person /></InputAdornment>,
-              }}
-            />
-            <TextField
-              fullWidth
-              id="outlined-email-input"
-              label="Email Address"
-              type="email"
-              name="email"
-              value={detail.email}
-              autoComplete="email"
-              margin="normal"
-              variant="outlined"
-              onChange={this.handleChange('email')}
-              // onBlur={this.handleOnBlur('email')}
-              InputProps={{
-                startAdornment: <InputAdornment position="start"><Email /></InputAdornment>,
-              }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={close} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleSubmit} color="primary" disabled={buttonStatus}>
-              Submit
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <MyContext.Consumer>
+          {(handleSnack) => {
+            console.log('-------79-----', handleSnack);
+            return (
+              <Dialog
+                fullWidth
+                maxWidth="md"
+                open={open}
+                onClose={close}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title">Edit Trainee</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Enter your trainee details
+                  </DialogContentText>
+                  <TextField
+                    fullWidth
+                    id="outlined-name"
+                    label="Name"
+                    value={detail.name}
+                    // className={classes.textField}
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleChange('name')}
+                    // onBlur={this.handleOnBlur('name')}
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start"><Person /></InputAdornment>,
+                    }}
+                  />
+                  <TextField
+                    fullWidth
+                    id="outlined-email-input"
+                    label="Email Address"
+                    type="email"
+                    name="email"
+                    value={detail.email}
+                    autoComplete="email"
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleChange('email')}
+                    // onBlur={this.handleOnBlur('email')}
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start"><Email /></InputAdornment>,
+                    }}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={close} color="primary">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => handleSnack('error', 'Not successful')
+                    }
+                    color="primary"
+                    disabled={buttonStatus}
+                  >
+                    Submit
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            );
+          }}
+        </MyContext.Consumer>
       </>
     );
   }
