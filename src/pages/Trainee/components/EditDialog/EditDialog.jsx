@@ -12,9 +12,7 @@ import Button from '@material-ui/core/Button';
 import {
   Person, Email,
 } from '@material-ui/icons';
-import * as yup from 'yup';
-import MyContext from '../../../../contexts';
-
+import { SnackbarConsumer } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
 const styles = theme => ({
   textField: {
@@ -59,7 +57,8 @@ class EditDialog extends React.Component {
     this.setState({ buttonStatus: false, traineeData: detail });
   };
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.stopPropagation();
     const { traineeData } = this.state;
     const { close } = this.props;
     console.log('Updated Data is ', traineeData);
@@ -74,70 +73,67 @@ class EditDialog extends React.Component {
     const { buttonStatus } = this.state;
     return (
       <>
-        <MyContext.Consumer>
-          {(handleSnack) => {
-            console.log('-------79-----', handleSnack);
-            return (
-              <Dialog
-                fullWidth
-                maxWidth="md"
-                open={open}
-                onClose={close}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title">Edit Trainee</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Enter your trainee details
-                  </DialogContentText>
-                  <TextField
-                    fullWidth
-                    id="outlined-name"
-                    label="Name"
-                    value={detail.name}
-                    // className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleChange('name')}
-                    // onBlur={this.handleOnBlur('name')}
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start"><Person /></InputAdornment>,
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    id="outlined-email-input"
-                    label="Email Address"
-                    type="email"
-                    name="email"
-                    value={detail.email}
-                    autoComplete="email"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleChange('email')}
-                    // onBlur={this.handleOnBlur('email')}
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start"><Email /></InputAdornment>,
-                    }}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={close} color="primary">
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={() => handleSnack('error', 'Not successful')
-                    }
-                    color="primary"
-                    disabled={buttonStatus}
-                  >
-                    Submit
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            );
-          }}
-        </MyContext.Consumer>
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={open}
+          onClose={close}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Edit Trainee</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter your trainee details
+            </DialogContentText>
+            <TextField
+              fullWidth
+              id="outlined-name"
+              label="Name"
+              value={detail.name}
+              // className={classes.textField}
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChange('name')}
+              // onBlur={this.handleOnBlur('name')}
+              InputProps={{
+                startAdornment: <InputAdornment position="start"><Person /></InputAdornment>,
+              }}
+            />
+            <TextField
+              fullWidth
+              id="outlined-email-input"
+              label="Email Address"
+              type="email"
+              name="email"
+              value={detail.email}
+              autoComplete="email"
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChange('email')}
+              // onBlur={this.handleOnBlur('email')}
+              InputProps={{
+                startAdornment: <InputAdornment position="start"><Email /></InputAdornment>,
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={close} color="primary">
+              Cancel
+            </Button>
+            <SnackbarConsumer>
+              {values => (
+                <Button
+                  onClick={(event) => { this.handleSubmit(event); values.openSnack('successful', 'success'); }
+                  }
+                  color="primary"
+                  disabled={buttonStatus}
+                >
+                  Submit
+                </Button>
+              )}
+            </SnackbarConsumer>
+          </DialogActions>
+        </Dialog>
       </>
     );
   }
