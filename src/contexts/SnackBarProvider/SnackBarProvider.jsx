@@ -76,24 +76,16 @@ class SnackbarProvider extends React.Component {
     const { classes, children } = this.props;
     const { open, message, status } = this.state;
     const Icon = variantIcon[status];
-<<<<<<< HEAD
     console.log('-----81------', this);
 
-=======
->>>>>>> 40269613168c9633ad3ed393676ebccec5a3fc86
 
     return (
       <>
         <SnackBarContext.Provider
           value={{
             openSnack: this.openSnackBar,
-<<<<<<< HEAD
             // closeSnack: this.closeSnackbar,
             // snackbarIsOpen: open,
-=======
-            closeSnack: this.closeSnackbar,
-            snackbarIsOpen: open,
->>>>>>> 40269613168c9633ad3ed393676ebccec5a3fc86
             message,
             status,
           }}
@@ -144,8 +136,4 @@ SnackbarProvider.propTypes = {
 };
 
 export default withStyles(styles)(SnackbarProvider);
-<<<<<<< HEAD
 export const SnackbarConsumer = SnackBarContext.Consumer;
-=======
-export const SnackbarConsumer = SnackBarContext.Consumer;
->>>>>>> 40269613168c9633ad3ed393676ebccec5a3fc86
