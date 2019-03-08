@@ -9,7 +9,12 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
 import * as yup from 'yup';
-
+import {
+  withRouter,
+} from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import callApi from '../../lib/utils/api';
+import { SnackbarConsumer } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 const styles = theme => ({
   main: {
@@ -22,6 +27,9 @@ const styles = theme => ({
       marginLeft: 'auto',
       marginRight: 'auto',
     },
+  },
+  progress: {
+    margin: theme.spacing.unit,
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
@@ -47,19 +55,16 @@ const styles = theme => ({
 });
 
 const propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf.isRequired,
 };
 
 class Login extends React.Component {
-  schema = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup.string().required(),
-  });
-
   constructor(props) {
     super(props);
+    console.log('-----66----', props);
+
     this.state = {
+      buttonDisable:false,
       showPassword: false,
       form: {
         password: '',
@@ -73,201 +78,245 @@ class Login extends React.Component {
         password: false,
         email: false,
       },
+      openProgress: false,
+      email: '',
+      password: '',
     };
   }
 
-handleChange = field => (event) => {
-  const { isTouched, form } = this.state;
+  schema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().required(),
+  });
 
-  this.setState({
-    form: { ...form, [field]: event.target.value },
-    isTouched: { ...isTouched, [field]: true },
-  }, this.handleValidate(field));
-};
 
-handleValidate = field => () => {
-  const {
-    form, error, isTouched,
-  } = this.state;
-  const {
-    email, password,
-  } = form;
-  this.schema.validate({
-    email, password,
-  }, { abortEarly: false }).then(() => {
+  handleChange = field => (event) => {
+    const { isTouched, form } = this.state;
+    const buttonCheck = this.buttonChecked();
     this.setState({
-      error: { ...error, [field]: '' },
+      form: { ...form, [field]: event.target.value },
       isTouched: { ...isTouched, [field]: true },
-    });
-  }).catch((err) => {
-    if (!err.inner.some(er => er.path === field)) {
+      buttonDisable: buttonCheck,
+    }, this.handleValidate(field));
+  };
+
+  handleValidate = field => () => {
+    const {
+      form, error, isTouched,
+    } = this.state;
+    const {
+      email, password,
+    } = form;
+    this.schema.validate({
+      email, password,
+    }, { abortEarly: false }).then(() => {
       this.setState({
         error: { ...error, [field]: '' },
         isTouched: { ...isTouched, [field]: true },
       });
-    }
-  });
-}
-
-handleOnBlur = field => () => {
-  const {
-    form, error, isTouched,
-  } = this.state;
-  const {
-    email, password,
-  } = form;
-  this.schema.validate({
-    email, password,
-  }, { abortEarly: false }).then(() => {
-    this.setState({
-      error: { ...error, [field]: '' },
-      isTouched: { ...isTouched, [field]: true },
-    });
-  }).catch((err) => {
-    err.inner.forEach((er) => {
-      if (er.path === field) {
+    }).catch((err) => {
+      if (!err.inner.some(er => er.path === field)) {
         this.setState({
-          error: { ...error, [field]: er.message },
+          error: { ...error, [field]: '' },
           isTouched: { ...isTouched, [field]: true },
         });
       }
     });
-  });
-}
-
-hasError = () => {
-  const { error } = this.state;
-  if (error.email === '' && error.password === '') {
-    return false;
   }
-  return true;
-}
 
-getError = (field) => {
-  const { isTouched, error } = this.state;
-  let result = '';
-  if (isTouched[field] === true) {
-    result = error[field];
+  handleOnBlur = field => () => {
+    const {
+      form, error, isTouched,
+    } = this.state;
+    const {
+      email, password,
+    } = form;
+    this.schema.validate({
+      email, password,
+    }, { abortEarly: false }).then(() => {
+      this.setState({
+        error: { ...error, [field]: '' },
+        isTouched: { ...isTouched, [field]: true },
+        email,
+        password,
+      });
+    }).catch((err) => {
+      err.inner.forEach((er) => {
+        if (er.path === field) {
+          this.setState({
+            error: { ...error, [field]: er.message },
+            isTouched: { ...isTouched, [field]: true },
+          });
+        }
+      });
+    });
   }
-  return result;
-}
 
-buttonChecked = () => {
-  const { isTouched } = this.state;
-  let touched = 0;
-  let result = false;
-  const checkError = this.hasError();
-  Object.keys(isTouched).forEach((i) => {
-    if (isTouched[i] === true) {
-      touched += 1;
+  hasError = () => {
+    const { error } = this.state;
+    if (error.email === '' && error.password === '') {
+      return false;
     }
-  });
-  if (!checkError && touched === 2) {
-    result = true;
-  } else if (checkError && touched !== 2) {
-    result = false;
+    return true;
   }
-  return result;
-}
 
-handleClickShowPassword = () => {
-  const { showPassword } = this.state;
-  this.setState({ showPassword: !showPassword });
-};
+  handleAuth = async (event, values) => {
+    event.preventDefault();
+    this.setState({buttonDisable: false, openProgress: true});
+    const { email, password } = this.state;
+    const auth = await callApi(email, password);
+    if (auth.status === 200) {
+      localStorage.setItem('token', auth.data.data);
 
-render() {
-  const { classes } = this.props;
-  const { showPassword } = this.state;
-  return (
-    <main className={classes.main}>
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Log in
-        </Typography>
-        <form className={classes.form}>
-          <TextField
-            fullWidth
-            error={this.getError('email')}
-            id="outlined-email-input"
-            label="Email Address"
-            className={classes.textField}
-            type="email"
-            name="email"
-            autoComplete="email"
-            margin="normal"
-            variant="outlined"
-            onChange={this.handleChange('email')}
-            onBlur={this.handleOnBlur('email')}
-            InputProps={{
-              startAdornment: <InputAdornment position="start"><Email /></InputAdornment>,
-            }}
-          />
-          <FormHelperText id="component-error-text2" className={classes.error}>
-            {this.getError('email')}
-          </FormHelperText>
-          <TextField
-            fullWidth
-            error={this.getError('password')}
-            id="outlined-password-input"
-            label="Password"
-            className={classes.textField}
-            type={showPassword ? 'text' : 'password'}
-            autoComplete="current-password"
-            margin="normal"
-            variant="outlined"
-            onChange={this.handleChange('password')}
-            onBlur={this.handleOnBlur('password')}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    onClick={this.handleClickShowPassword}
+      this.props.history.push('/trainee');
+    } else {
+      console.log('-------------56-----------------');
+
+      values.openSnack('Error in Authentication', 'error');
+      this.setState({buttonDisable: true, openProgress: false});
+
+    }
+  }
+
+  getError = (field) => {
+    const { isTouched, error } = this.state;
+    let result = '';
+    if (isTouched[field] === true) {
+      result = error[field];
+    }
+    return result;
+  }
+
+  buttonChecked = () => {
+    const { isTouched } = this.state;
+    let touched = 0;
+    let result = false;
+    const checkError = this.hasError();
+    Object.keys(isTouched).forEach((i) => {
+      if (isTouched[i] === true) {
+        touched += 1;
+      }
+    });
+    if (!checkError && touched === 2) {
+      result = true;
+    } else if (checkError && touched !== 2) {
+      result = false;
+    }
+    return result;
+  }
+
+  handleClickShowPassword = () => {
+    const { showPassword } = this.state;
+    this.setState({ showPassword: !showPassword });
+  };
+
+  render() {
+    const { classes } = this.props;
+    const { showPassword, openProgress, buttonDisable } = this.state;
+    return (
+      <main className={classes.main}>
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Log in
+          </Typography>
+          <form className={classes.form}>
+            <TextField
+              fullWidth
+              error={this.getError('email')}
+              id="outlined-email-input"
+              label="Email Address"
+              className={classes.textField}
+              type="email"
+              name="email"
+              autoComplete="email"
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChange('email')}
+              onBlur={this.handleOnBlur('email')}
+              InputProps={{
+                startAdornment: <InputAdornment position="start"><Email /></InputAdornment>,
+              }}
+            />
+            <FormHelperText id="component-error-text2" className={classes.error}>
+              {this.getError('email')}
+            </FormHelperText>
+            <TextField
+              fullWidth
+              error={this.getError('password')}
+              id="outlined-password-input"
+              label="Password"
+              className={classes.textField}
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChange('password')}
+              onBlur={this.handleOnBlur('password')}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <FormHelperText id="component-error-text3" className={classes.error}>
+              {this.getError('password')}
+            </FormHelperText>
+
+            {
+              (buttonDisable) ? (
+                <SnackbarConsumer>
+                  {values => (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={event => this.handleAuth(event, values)}
+                      className={classes.submit}
+                    >
+                      SIGN IN
+                  </Button>
+                  )
+                  }
+                </SnackbarConsumer>
+              ) : (
+                  <Button
+                    disabled
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <FormHelperText id="component-error-text3" className={classes.error}>
-            {this.getError('password')}
-          </FormHelperText>
+                                        {
+                        (openProgress)
+                        ?
 
-          {
-            (this.buttonChecked()) ? (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                SIGN IN
-              </Button>
-            ) : (
-              <Button
-                disabled
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                SIGN IN
-              </Button>
-            )
-          }
-        </form>
-      </Paper>
-    </main>
-  );
-}
+                      (<CircularProgress className={classes.progress} />)
+                        :
+                        ''
+                      }
+                    SIGN IN
+                  </Button>
+                )
+            }
+          </form>
+        </Paper>
+      </main>
+    );
+  }
 }
 
 Login.propTypes = propTypes;
 
-export default withStyles(styles)(Login);
+export default withRouter(withStyles(styles)(Login));

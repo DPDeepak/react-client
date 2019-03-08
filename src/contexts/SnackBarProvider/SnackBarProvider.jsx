@@ -57,6 +57,8 @@ class SnackbarProvider extends React.Component {
   };
 
   openSnackBar = (message, status) => {
+    console.log('-----60------', message, status);
+
     this.setState({
       message,
       open: true,
@@ -76,7 +78,6 @@ class SnackbarProvider extends React.Component {
     const { classes, children } = this.props;
     const { open, message, status } = this.state;
     const Icon = variantIcon[status];
-    console.log('-----81------', this);
 
 
     return (
