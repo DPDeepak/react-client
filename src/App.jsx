@@ -12,7 +12,6 @@ import TraineeList from './pages/Trainee/TraineeList';
 import TraineeDetail from './pages/Trainee/TraineeDetail';
 import SnackBarProvider from './contexts/SnackBarProvider/SnackBarProvider';
 
-
 const App = () => (
   <>
     <SnackBarProvider>

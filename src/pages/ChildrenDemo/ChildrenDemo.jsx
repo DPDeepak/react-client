@@ -36,6 +36,9 @@ const ChildrenDemo = () => (
         )}
       </Math>
     </Typography>
+
+    <Math first={7} operator="+" second={4} />
+
     <Math first={7} operator="+" second={4}>
       {(first, second, operator, result) => (
         <h3>
