@@ -34,7 +34,6 @@ function MediaControlCard(props) {
   let isFound = -1;
   trainees.forEach((res, index) => {
     if (res.id === rest.match.params.id) {
-      // return (<NoMatch />);
       isFound = index;
     }
   });

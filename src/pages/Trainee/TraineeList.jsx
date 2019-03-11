@@ -1,23 +1,34 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import AddDialog from './components';
 import TraineeTable from './TraineeTable';
 import { trainees } from './data/trainees';
 import { column } from './data/column';
-
+import DeleteDialog from './components/DeleteDialog/DeleteDialog';
+import EditDialog from './components/EditDialog';
 
 class TraineeList extends React.Component {
-
   state = {
     open: false,
     order: 'asc',
     orderBy: '',
     act: '',
+    traineeDetail: '',
+    page: 0,
+    count: 100,
+    rowsPerPage: 10,
+    deleteOpen: false,
+    editOpen: false,
   };
 
   handleClickOpen = () => {
     this.setState({ open: true });
+  };
+
+  handleChangePage = (page) => {
+    this.setState({ page });
   };
 
   handleClose = (value) => {
@@ -31,6 +42,20 @@ class TraineeList extends React.Component {
     this.setState({ order: (order) === 'asc' ? 'desc' : 'asc', act: field });
   };
 
+  handleEditDialogOpen = (event, trainee) => {
+    event.preventDefault();
+    this.setState({ editOpen: true, traineeDetail: trainee });
+  };
+
+  handleRemovalDialogOpen = (event, trainee) => {
+    event.preventDefault();
+    this.setState({ deleteOpen: true, traineeDetail: trainee });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ deleteOpen: false, editOpen: false });
+  }
+
   handleSubmit = (form) => {
     this.setState({ open: false });
     console.log(form);
@@ -41,7 +66,9 @@ class TraineeList extends React.Component {
   };
 
   render() {
-    const { open, order, orderBy, act } = this.state;
+    const {
+      open, order, orderBy, act, page, count, rowsPerPage, deleteOpen, editOpen, traineeDetail,
+    } = this.state;
 
     return (
       <>
@@ -56,6 +83,8 @@ class TraineeList extends React.Component {
             </Button>
           </div>
           <AddDialog open={open} onClose={this.handleClose} onSubmit={this.handleSubmit} />
+          <EditDialog open={editOpen} close={this.handleDialogClose} detail={traineeDetail} />
+          <DeleteDialog open={deleteOpen} close={this.handleDialogClose} detail={traineeDetail} />
           <TraineeTable
             data={trainees}
             column={column}
@@ -64,19 +93,21 @@ class TraineeList extends React.Component {
             onSort={this.handleSort}
             onSelect={this.handleSelect}
             act={act}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            onChangePage={this.handleChangePage}
+            count={count}
+            actions={[
+              {
+                icon: <EditIcon />,
+                handler: this.handleEditDialogOpen,
+              },
+              {
+                icon: <DeleteIcon />,
+                handler: this.handleRemovalDialogOpen,
+              },
+            ]}
           />
-
-          <div>
-            <ul>
-              {trainees.map(trainee => (
-                <li>
-                  <Link to={`/trainee/${trainee.id}`}>{trainee.name}</Link>
-                </li>
-              ))
-              }
-            </ul>
-          </div>
-
         </div>
       </>
     );
