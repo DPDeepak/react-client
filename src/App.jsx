@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router, Route, Redirect, Switch, withRouter,
 } from 'react-router-dom';
 import Login from './pages/Login';
-import PrivateRoute, { AuthRoute } from './routes';
+import { PrivateRoute, AuthRoute } from './routes';
 import ChildrenDemo from './pages/ChildrenDemo/ChildrenDemo';
 import TextField from './components/TextField';
 import InputDemo from './pages/InputDemo';
@@ -11,7 +11,6 @@ import NoMatch from './pages/NoMatch';
 import TraineeList from './pages/Trainee/TraineeList';
 import TraineeDetail from './pages/Trainee/TraineeDetail';
 import SnackBarProvider from './contexts/SnackBarProvider/SnackBarProvider';
-
 
 const App = () => (
   <>

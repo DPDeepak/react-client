@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Match, Redirect, Switch, withRouter } from 'react-router-dom'
 import PrivateLayout from '../layouts/PrivateLayout'
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoutes = ({ component: Component, ...rest }) => {
+  if(localStorage.getItem('token'))
+  {
   return (
     <Route
       {...rest}
@@ -13,5 +15,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       )}
     />
   );
-};
-export default withRouter(PrivateRoute);
+}
+else{
+return( <Route >
+<Redirect to="/login" />
+</Route>)}
+}
+const PrivateRoute = withRouter(PrivateRoutes);
+
+export { PrivateRoute };
