@@ -7,7 +7,6 @@ import AddDialog, { Trainee } from './pages/Trainee';
 import Navbar from './pages/components';
 import Login from './pages/Login';
 
-
 const App = () => (
   // <MuiThemeProvider theme={theme}>
   //   <ChildrenDemo />
