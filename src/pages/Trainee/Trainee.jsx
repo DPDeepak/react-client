@@ -11,8 +11,8 @@ export default class Trainee extends React.Component {
     this.setState({ open: true });
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
+  handleClose = (value) => {
+    this.setState({ open: value });
   };
 
   handleSubmit = (form) => {
