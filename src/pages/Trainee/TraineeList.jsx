@@ -9,7 +9,6 @@ import { column } from './data/column';
 import DeleteDialog from './components/DeleteDialog/DeleteDialog';
 import EditDialog from './components/EditDialog';
 
-
 class TraineeList extends React.Component {
   state = {
     open: false,
