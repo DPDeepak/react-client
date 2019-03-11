@@ -4,26 +4,30 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
-  footer: {
-    marginTop: theme.spacing.unit * 8,
+  div: {
+    marginTop: theme.spacing.unit,
     padding: `${theme.spacing.unit * 6}px 0`,
   },
 });
 
-function Footer(props) {
+function NoMatch(props) {
   const { classes } = props;
   return (
     <>
-      <footer className={classes.footer}>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          &#169; Successive Technologies
+      <div className={classes.div}>
+        <Typography variant="h3" align="center" gutterBottom>
+          Not Found
         </Typography>
-      </footer>
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+          Seems like the page you are looking after does not exist.
+        </Typography>
+      </div>
     </>
   );
 }
-Footer.propTypes = {
+
+NoMatch.propTypes = {
   classes: PropTypes.objectOf.isRequired,
 };
 
-export default withStyles(styles)(Footer);
+export default withStyles(styles)(NoMatch);
