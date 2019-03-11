@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { SnackbarConsumer } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
 class DeleteDialog extends React.Component {
   state = {
@@ -19,8 +20,17 @@ class DeleteDialog extends React.Component {
     this.setState({ open: false });
   };
 
-  showDetail = (detail) => {
+  showDetail = (detail, openSnack) => {
     console.log('Deleted Details are', detail);
+    const date = new Date('2019-02-14');
+
+    const receivedDate = new Date(detail.createdAt);
+    console.log();
+
+    (receivedDate < date) ?
+      openSnack('Error , Cannot Delete Record ', 'error')
+      : openSnack('Successfully Delete Record ', 'success');
+
     const { close } = this.props;
     close();
   };
@@ -43,9 +53,14 @@ class DeleteDialog extends React.Component {
             <Button onClick={close} color="primary">
               Cancel
             </Button>
-            <Button variant="contained" color="primary" onClick={event => this.showDetail(detail)} >
-              Delete
-            </Button>
+            <SnackbarConsumer>
+              {values => (
+                <Button variant="contained" color="primary" onClick={() => this.showDetail(detail, values.openSnack)}>
+                  Delete
+                </Button>
+              )
+              }
+            </SnackbarConsumer>
           </DialogActions>
         </Dialog>
       </div>

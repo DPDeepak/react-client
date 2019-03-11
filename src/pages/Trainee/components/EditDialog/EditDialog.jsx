@@ -3,20 +3,16 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import {
   Person, Email,
 } from '@material-ui/icons';
-import * as yup from 'yup';
-
+import { SnackbarConsumer } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
 const styles = theme => ({
   textField: {
@@ -61,17 +57,19 @@ class EditDialog extends React.Component {
     this.setState({ buttonStatus: false, traineeData: detail });
   };
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.stopPropagation();
     const { traineeData } = this.state;
     const { close } = this.props;
     console.log('Updated Data is ', traineeData);
     this.setState({ buttonStatus: true });
     close(false);
   };
-  ;
 
   render() {
-    const { open, classes, close, detail } = this.props;
+    const {
+      open, classes, close, detail,
+    } = this.props;
     const { buttonStatus } = this.state;
     return (
       <>
@@ -122,9 +120,18 @@ class EditDialog extends React.Component {
             <Button onClick={close} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleSubmit} color="primary" disabled={buttonStatus}>
-              Submit
-            </Button>
+            <SnackbarConsumer>
+              {values => (
+                <Button
+                  onClick={(event) => { this.handleSubmit(event); values.openSnack('successful', 'success'); }
+                  }
+                  color="primary"
+                  disabled={buttonStatus}
+                >
+                  Submit
+                </Button>
+              )}
+            </SnackbarConsumer>
           </DialogActions>
         </Dialog>
       </>

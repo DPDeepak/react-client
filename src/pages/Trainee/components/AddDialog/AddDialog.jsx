@@ -16,6 +16,7 @@ import {
   Person, Visibility, VisibilityOff, Email,
 } from '@material-ui/icons';
 import * as yup from 'yup';
+import { SnackbarConsumer } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
 
 const styles = theme => ({
@@ -42,7 +43,7 @@ const defaultProps = {
   open: false,
   classes: {},
 };
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*/;
 
 class AddDialog extends React.Component {
   schema = yup.object().shape({
@@ -183,7 +184,8 @@ class AddDialog extends React.Component {
     this.setState({ showPassword: !showPassword });
   };
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { onSubmit } = this.props;
     const { form } = this.state;
     onSubmit(form);
@@ -311,17 +313,20 @@ class AddDialog extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            {
-              (this.buttonChecked()) ? (
-                <Button onClick={this.handleSubmit} color="primary">
-                  Submit
-                </Button>
-              ) : (
-                <Button onClick={this.handleSubmit} color="primary" disabled>
+            <SnackbarConsumer>
+              {values => (
+                (this.buttonChecked()) ? (
+                  <Button onClick={(event) => { this.handleSubmit(event); values.openSnack('successful', 'success'); }} color="primary"  >
                     Submit
                 </Button>
+                ) : (
+                    <Button onClick={this.handleSubmit} color="primary" disabled >
+                      Submit
+                </Button>
+                  )
               )
-            }
+              }
+            </SnackbarConsumer>
           </DialogActions>
         </Dialog>
       </>
