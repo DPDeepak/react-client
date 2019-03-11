@@ -7,6 +7,7 @@ import TraineeTable from './TraineeTable';
 import { trainees } from './data/trainees';
 import { column } from './data/column';
 
+
 class TraineeList extends React.Component {
   state = {
     open: false,
