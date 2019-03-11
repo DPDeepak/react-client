@@ -1,2 +1,2 @@
 export { default } from './components';
-export { Trainee } from './Trainee';
+export { trainees } from './data/trainees';
