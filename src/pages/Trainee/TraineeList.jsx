@@ -8,6 +8,7 @@ import { trainees } from './data/trainees';
 import { column } from './data/column';
 import DeleteDialog from './components/DeleteDialog/DeleteDialog';
 import EditDialog from './components/EditDialog';
+import callApi from '../../lib/utils/api';
 
 
 class TraineeList extends React.Component {
@@ -65,6 +66,13 @@ class TraineeList extends React.Component {
   handleSelect = (id) => {
     this.props.history.push(`/trainee/${id}`);
   };
+
+  async componentDidMount() {
+
+    const auth = await callApi({},{Authorization: localStorage.token},'/api/trainee','GET');
+    console.log('-------72----',auth);
+
+  }
 
   render() {
     const {

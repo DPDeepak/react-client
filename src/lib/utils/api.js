@@ -1,28 +1,23 @@
 import axios from 'axios';
 
-const callApi = async (email, password) => {
+const callApi = async (data, headers, url,method) => {
   try {
-    console.log('----------------5---------', email, password);
-
     const response = await axios({
-      method: 'post',
-      url: 'https://express-training.herokuapp.com/api/user/login',
-      data: {
-        email,
-        password,
-      },
+      method,
+      baseURL: 'https://express-training.herokuapp.com',
+      url,
+      data,
+      headers,
     });
-    console.log('--', response);
+    console.log('--res=>', response);
     return response;
   } catch (err) {
-    console.log('------Error', err);
+    console.log('------Error', err.response);
     const error = {
       messageError: err.message,
       status: err.status,
-
     };
     return error;
-    // throw new Error(err);
   }
 };
 

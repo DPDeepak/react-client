@@ -89,7 +89,6 @@ class Login extends React.Component {
     password: yup.string().required(),
   });
 
-
   handleChange = field => (event) => {
     const { isTouched, form } = this.state;
     const buttonCheck = this.buttonChecked();
@@ -164,14 +163,14 @@ class Login extends React.Component {
     event.preventDefault();
     this.setState({buttonDisable: false, openProgress: true});
     const { email, password } = this.state;
-    const auth = await callApi(email, password);
+    const headers={};
+    const auth = await callApi({email, password},headers,'/api/user/login','POST');
+
     if (auth.status === 200) {
       localStorage.setItem('token', auth.data.data);
-
       this.props.history.push('/trainee');
     } else {
       console.log('-------------56-----------------');
-
       values.openSnack('Error in Authentication', 'error');
       this.setState({buttonDisable: true, openProgress: false});
 
