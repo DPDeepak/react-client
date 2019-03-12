@@ -9,6 +9,9 @@ import { column } from './data/column';
 import DeleteDialog from './components/DeleteDialog/DeleteDialog';
 import EditDialog from './components/EditDialog';
 import callApi from '../../lib/utils/api';
+import getDateFormatted from '../../lib/utils';
+import withLoaderAndMessage from '../../components/HOC';
+import { limit } from './data/constants';
 
 
 class TraineeList extends React.Component {
@@ -19,10 +22,13 @@ class TraineeList extends React.Component {
     act: '',
     traineeDetail: '',
     page: 0,
-    count: 100,
-    rowsPerPage: 10,
+    count: 0,
+    dataLength: 0,
+    rowsPerPage: limit,
     deleteOpen: false,
     editOpen: false,
+    records: [],
+    loader: true,
   };
 
   handleClickOpen = () => {
@@ -30,7 +36,9 @@ class TraineeList extends React.Component {
   };
 
   handleChangePage = (page) => {
-    this.setState({ page });
+    this.setState({ page, loader: true }, () => {
+      this.getData();
+    });
   };
 
   handleClose = (value) => {
@@ -67,16 +75,30 @@ class TraineeList extends React.Component {
     this.props.history.push(`/trainee/${id}`);
   };
 
+
+  async getData() {
+    const { page } = this.state;
+    const skip = page * limit;
+
+    const auth = await callApi({}, { Authorization: localStorage.token }, `/api/trainee?skip=${skip}&limit=${limit}`, 'GET');
+
+    const { count, records } = auth.data.data;
+    const dataToShow = count - skip;
+    this.setState({ records, count, loader: false, dataLength: dataToShow }, () => {
+      console.log('------102-----', this.state.dataLength);
+
+    })
+  }
+
   async componentDidMount() {
-
-    const auth = await callApi({},{Authorization: localStorage.token},'/api/trainee','GET');
-    console.log('-------72----',auth);
-
+    this.getData()
   }
 
   render() {
+    console.log('-------115----', this);
+
     const {
-      open, order, orderBy, act, page, count, rowsPerPage, deleteOpen, editOpen, traineeDetail,
+      open, order, orderBy, act, page, count, rowsPerPage, deleteOpen, editOpen, traineeDetail, records, loader, dataLength
     } = this.state;
 
     return (
@@ -95,7 +117,9 @@ class TraineeList extends React.Component {
           <EditDialog open={editOpen} close={this.handleDialogClose} detail={traineeDetail} />
           <DeleteDialog open={deleteOpen} close={this.handleDialogClose} detail={traineeDetail} />
           <TraineeTable
-            data={trainees}
+            data={records}
+            loader={loader}
+            dataLength={dataLength}
             column={column}
             orderBy={orderBy}
             order={order}
@@ -123,4 +147,6 @@ class TraineeList extends React.Component {
   }
 }
 
+// const EnhanceTraineeList = withLoaderAndMessage(TraineeList);
 export default TraineeList;
+

@@ -6,7 +6,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import withStyles from '@material-ui/core/styles/withStyles';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -18,7 +17,7 @@ import * as yup from 'yup';
 import DialogActions from '@material-ui/core/DialogActions';
 import callApi from '../../../../lib/utils/api';
 import { SnackbarConsumer } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Progress from '../../../../components/Progress';
 
 const schema = yup.object().shape({
   name: yup
@@ -44,15 +43,6 @@ const schema = yup.object().shape({
 });
 
 
-const styles = theme => ({
-    progress: {
-    margin: theme.spacing.unit*0.2,
-  },
-})
-
-const propTypes = {
-  classes: PropTypes.objectOf.isRequired,
-};
 
 class AddDialogue extends Component {
   constructor(props) {
@@ -325,7 +315,7 @@ class AddDialogue extends Component {
                   {
                     (startSpin)
                       ?
-                      (<CircularProgress className={classes.progress} size={20} />)
+                      (<Progress size={20} />)
                       :
                       ''
                   }
@@ -360,4 +350,4 @@ AddDialogue.defaultProps = {
   onClose: () => { },
   onSubmit: () => { },
 };
-export default (withStyles(styles)(AddDialogue));
+export default AddDialogue;

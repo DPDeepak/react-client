@@ -17,12 +17,10 @@ export default class Trainee extends React.Component {
 
   handleSubmit = (form) => {
     this.setState({ open: false });
-    console.log(form);
   };
 
   render() {
     const { open } = this.state;
-    console.log('---------', this.props);
 
     return (
       <>

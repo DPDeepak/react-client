@@ -30,8 +30,6 @@ const styles = {
 
 const handleLogout =() => {
   localStorage.removeItem('token')
-  console.log(localStorage.getItem('token'));
-
 }
 
 function Navbar(props) {

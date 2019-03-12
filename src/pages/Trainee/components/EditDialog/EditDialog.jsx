@@ -49,11 +49,9 @@ class EditDialog extends React.Component {
   }
 
   handleChange = field => (event) => {
-    console.log('-----', event.target.value);
     const { traineeData } = this.state;
     const { detail } = this.props;
     detail[field] = event.target.value;
-    // const updatedData = Object.assign(traineeData, source);
     this.setState({ buttonStatus: false, traineeData: detail });
   };
 
@@ -61,7 +59,6 @@ class EditDialog extends React.Component {
     event.stopPropagation();
     const { traineeData } = this.state;
     const { close } = this.props;
-    console.log('Updated Data is ', traineeData);
     this.setState({ buttonStatus: true });
     close(false);
   };

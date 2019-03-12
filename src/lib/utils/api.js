@@ -9,10 +9,8 @@ const callApi = async (data, headers, url,method) => {
       data,
       headers,
     });
-    console.log('--res=>', response);
     return response;
   } catch (err) {
-    console.log('------Error', err.response);
     const error = {
       messageError: err.message,
       status: err.status,

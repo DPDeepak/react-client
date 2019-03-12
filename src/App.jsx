@@ -27,7 +27,7 @@ const App = () => (
           <PrivateRoute exact path="/text-field" component={TextField} />
           <PrivateRoute exact path="/input-demo" component={InputDemo} />
           <PrivateRoute exact path="/children-demo" component={ChildrenDemo} />
-          <PrivateRoute component={NoMatch} />
+          <PrivateRoute heading="Not Found" message="Seems like the page you are looking after does not exist." component={NoMatch} />
         </Switch>
       </Router>
     </SnackBarProvider>

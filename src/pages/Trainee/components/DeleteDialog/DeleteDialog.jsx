@@ -21,12 +21,9 @@ class DeleteDialog extends React.Component {
   };
 
   showDetail = (detail, openSnack) => {
-    console.log('Deleted Details are', detail);
     const date = new Date('2019-02-14');
 
     const receivedDate = new Date(detail.createdAt);
-    console.log();
-
     (receivedDate < date) ?
       openSnack('Error , Cannot Delete Record ', 'error')
       : openSnack('Successfully Delete Record ', 'success');

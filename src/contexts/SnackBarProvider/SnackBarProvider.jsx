@@ -57,8 +57,6 @@ class SnackbarProvider extends React.Component {
   };
 
   openSnackBar = (message, status) => {
-    console.log('-----60------', message, status);
-
     this.setState({
       message,
       open: true,

@@ -4,7 +4,6 @@ import Style from './style';
 
 const Button = (props) => {
   const { disabled, color, ...rest } = props;
-  console.log(rest);
   return (
     <>
       <input type="submit" {...rest} disabled={disabled} style={{ ...Style, ...color }} />
