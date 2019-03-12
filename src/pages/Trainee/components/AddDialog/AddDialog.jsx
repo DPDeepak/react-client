@@ -161,24 +161,24 @@ class AddDialogue extends Component {
   onSubmit = async (event, values) => {
     event.preventDefault();
     this.setState({ spinner: true, startSpin: true })
-    const { onSubmit } = this.props;
+    const { onSubmit, onClose } = this.props;
     const {
       name,
       email,
-      password,
-      spinner,
-      startSpin,
+      password
     } = this.state;
     const Authorization = localStorage.token;
-    const auth = await callApi({ name, email, password }, { Authorization }, '/api/trainee','POST');
+    const auth = await callApi({ name, email, password }, { Authorization }, '/api/trainee', 'POST');
     if (auth.status === 200) {
       this.setState({ spinner: false })
       onSubmit({ name, email, password });
       values.openSnack('Successfully Add Trainee', 'success');
+      onClose();
     } else {
       values.openSnack('Error in Authentication', 'error');
       this.setState({ spinner: false })
       onSubmit({ name, email, password });
+      onClose();
     }
   }
 

@@ -12,6 +12,7 @@ import callApi from '../../lib/utils/api';
 import getDateFormatted from '../../lib/utils';
 import withLoaderAndMessage from '../../components/HOC';
 import { limit } from './data/constants';
+import { SnackbarConsumer } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 
 class TraineeList extends React.Component {
@@ -29,6 +30,7 @@ class TraineeList extends React.Component {
     editOpen: false,
     records: [],
     loader: true,
+    skip: 0,
   };
 
   handleClickOpen = () => {
@@ -42,7 +44,7 @@ class TraineeList extends React.Component {
   };
 
   handleClose = (value) => {
-    this.setState({ open: value });
+    this.setState({ open: value }, () => (this.getData()));
   };
 
   handleSort = (field, order) => {
@@ -63,7 +65,16 @@ class TraineeList extends React.Component {
   };
 
   handleDialogClose = () => {
-    this.setState({ deleteOpen: false, editOpen: false });
+    this.setState({ deleteOpen: false, editOpen: false }, () => (this.getData()));
+  }
+
+  handleDeleteClose = () => {
+    const { page, count } = this.state
+    console.log('-----________________', count);
+
+    const previousPage = page - 1;
+
+    this.setState({ deleteOpen: false, editOpen: false, page: previousPage }, () => (this.getData()));
   }
 
   handleSubmit = (form) => {
@@ -78,16 +89,21 @@ class TraineeList extends React.Component {
 
   async getData() {
     const { page } = this.state;
+    const { values } = this.props;
+
     const skip = page * limit;
+    const params = { limit, skip }
+    const auth = await callApi({}, { Authorization: localStorage.token }, '/api/trainee', 'GET', params);
+    if (auth.status === 200) {
+      const { count, records } = auth.data.data;
+      const dataToShow = count - skip;
+      this.setState({ records, count, loader: false, dataLength: dataToShow, skip })
+      // values.openSnack('Successfully fetch data', 'success');
+    } else {
+      values.openSnack('Error in fetching data', 'error');
+      this.setState({ records: [], count: 0})
 
-    const auth = await callApi({}, { Authorization: localStorage.token }, `/api/trainee?skip=${skip}&limit=${limit}`, 'GET');
-
-    const { count, records } = auth.data.data;
-    const dataToShow = count - skip;
-    this.setState({ records, count, loader: false, dataLength: dataToShow }, () => {
-      console.log('------102-----', this.state.dataLength);
-
-    })
+    }
   }
 
   async componentDidMount() {
@@ -95,10 +111,8 @@ class TraineeList extends React.Component {
   }
 
   render() {
-    console.log('-------115----', this);
-
     const {
-      open, order, orderBy, act, page, count, rowsPerPage, deleteOpen, editOpen, traineeDetail, records, loader, dataLength
+      open, order, orderBy, act, page, count, rowsPerPage, deleteOpen, editOpen, traineeDetail, skip, records, loader, dataLength
     } = this.state;
 
     return (
@@ -115,7 +129,7 @@ class TraineeList extends React.Component {
           </div>
           <AddDialog open={open} onClose={this.handleClose} onSubmit={this.handleSubmit} />
           <EditDialog open={editOpen} close={this.handleDialogClose} detail={traineeDetail} />
-          <DeleteDialog open={deleteOpen} close={this.handleDialogClose} detail={traineeDetail} />
+          <DeleteDialog open={deleteOpen} close={this.handleDialogClose} closeSuccess={this.handleDeleteClose} detail={traineeDetail} count={count} skip={skip} />
           <TraineeTable
             data={records}
             loader={loader}
@@ -147,6 +161,11 @@ class TraineeList extends React.Component {
   }
 }
 
-// const EnhanceTraineeList = withLoaderAndMessage(TraineeList);
-export default TraineeList;
-
+export default ({ ...rest }) => (
+  <SnackbarConsumer>
+    {values => (
+      <TraineeList values={values} {...rest} />
+    )
+    }
+  </SnackbarConsumer>
+)

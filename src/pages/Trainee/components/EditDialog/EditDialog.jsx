@@ -13,6 +13,8 @@ import {
   Person, Email,
 } from '@material-ui/icons';
 import { SnackbarConsumer } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
+import callApi from '../../../../lib/utils/api';
+import Progress from '../../../../components/Progress';
 
 const styles = theme => ({
   textField: {
@@ -45,29 +47,53 @@ class EditDialog extends React.Component {
     this.state = {
       buttonStatus: true,
       traineeData: '',
+      startSpin: false,
+      spinner: false,
     };
   }
 
   handleChange = field => (event) => {
-    const { traineeData } = this.state;
     const { detail } = this.props;
-    detail[field] = event.target.value;
-    this.setState({ buttonStatus: false, traineeData: detail });
+    const unchangedData=detail;
+    unchangedData[field] = event.target.value;
+    this.setState({ buttonStatus: false, traineeData: unchangedData });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event, values) => {
     event.stopPropagation();
     const { traineeData } = this.state;
-    const { close } = this.props;
-    this.setState({ buttonStatus: true });
-    close(false);
+    const { close, detail } = this.props;
+    this.setState({ buttonStatus: true, spinner: true, startSpin: true });
+    const data = {
+      id: traineeData._id,
+      name: traineeData.name,
+      email: traineeData.email,
+    }
+    const params = {};
+    const result = await callApi(data, { Authorization: localStorage.token }, '/api/trainee', 'PUT', params)
+    if (result.status === 200) {
+      values.openSnack('Successfully update data', 'success');
+      this.setState({ spinner: false, startSpin: false });
+      close(false);
+    } else {
+      values.openSnack('Error in updating data', 'error');
+      this.setState({ spinner: false, startSpin: false });
+      close(false);
+    }
+    console.log(result);
+
+    console.log('Traineedata',traineeData);
+    console.log('detail',detail);
+
+
+
   };
 
   render() {
     const {
-      open, classes, close, detail,
+      open, close, detail,
     } = this.props;
-    const { buttonStatus } = this.state;
+    const { buttonStatus, startSpin, spinner } = this.state;
     return (
       <>
         <Dialog
@@ -117,18 +143,42 @@ class EditDialog extends React.Component {
             <Button onClick={close} color="primary">
               Cancel
             </Button>
-            <SnackbarConsumer>
-              {values => (
-                <Button
-                  onClick={(event) => { this.handleSubmit(event); values.openSnack('successful', 'success'); }
-                  }
+
+            {
+              (spinner) ?
+
+                (<Button
+                  variant="contained"
                   color="primary"
-                  disabled={buttonStatus}
+                  disabled
                 >
                   Submit
+                {
+                    (startSpin)
+                      ?
+                      (<Progress size={20} />)
+                      :
+                      ''
+                  }
                 </Button>
-              )}
-            </SnackbarConsumer>
+                )
+                :
+                (
+                  <SnackbarConsumer>
+                    {values => (
+                      <Button
+                        variant="contained"
+                        onClick={(event) => { this.handleSubmit(event, values) }
+                        }
+                        color="primary"
+                        disabled={buttonStatus}
+                      >
+                        Submit
+                </Button>
+                    )}
+                  </SnackbarConsumer>
+                )
+            }
           </DialogActions>
         </Dialog>
       </>

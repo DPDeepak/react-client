@@ -9,7 +9,7 @@ const withLoaderAndMessage = (WrappedComponent) => {
     }
 
     render() {
-      const { loader, dataLength } = this.props;
+      const { loader, dataLength, count } = this.props;
 
       return (
 
@@ -21,7 +21,7 @@ const withLoaderAndMessage = (WrappedComponent) => {
             </div>
             )
               : (
-                (dataLength) ?
+                (count) ?
                   <WrappedComponent {...this.props} />
                   : <NoMatch heading="OOPS!" message="No More Trainees are available" />
               )

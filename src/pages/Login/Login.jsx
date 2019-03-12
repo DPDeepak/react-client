@@ -163,7 +163,7 @@ class Login extends React.Component {
     this.setState({buttonDisable: false, openProgress: true});
     const { email, password } = this.state;
     const headers={};
-    const auth = await callApi({email, password},headers,'/api/user/login','POST');
+    const auth = await callApi({email, password},headers,'/api/user/login','POST',{});
 
     if (auth.status === 200) {
       localStorage.setItem('token', auth.data.data);
