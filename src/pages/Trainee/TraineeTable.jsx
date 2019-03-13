@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import { Button, IconButton } from '@material-ui/core';
+import withLoaderAndMessage from '../../components/HOC';
 
 
 const styles = theme => ({
@@ -104,24 +105,22 @@ const SimpleTable = (props) => {
         </TableBody>
       </Table>
       {
-        count
-          ? (
-            <TablePagination
-              rowsPerPageOptions={[]}
-              component="div"
-              count={count}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              backIconButtonProps={{
-                'aria-label': 'Previous Page',
-              }}
-              nextIconButtonProps={{
-                'aria-label': 'Next Page',
-              }}
-              onChangePage={handleChangePage}
-            />
-          )
-          : ''
+        (
+          <TablePagination
+            rowsPerPageOptions={[]}
+            component="div"
+            count={count}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={handleChangePage}
+          />
+        )
       }
     </Paper>
   );
@@ -131,4 +130,4 @@ SimpleTable.propTypes = {
   classes: PropTypes.objectOf.isRequired,
 };
 
-export default withStyles(styles)(SimpleTable);
+export default withStyles(styles)(withLoaderAndMessage(SimpleTable));

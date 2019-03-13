@@ -15,6 +15,7 @@ import {
 import CircularProgress from '@material-ui/core/CircularProgress';
 import callApi from '../../lib/utils/api';
 import { SnackbarConsumer } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import Progress from '../../components/Progress';
 
 const styles = theme => ({
   main: {
@@ -61,8 +62,6 @@ const propTypes = {
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    console.log('-----66----', props);
-
     this.state = {
       buttonDisable:false,
       showPassword: false,
@@ -88,7 +87,6 @@ class Login extends React.Component {
     email: yup.string().email().required(),
     password: yup.string().required(),
   });
-
 
   handleChange = field => (event) => {
     const { isTouched, form } = this.state;
@@ -164,14 +162,13 @@ class Login extends React.Component {
     event.preventDefault();
     this.setState({buttonDisable: false, openProgress: true});
     const { email, password } = this.state;
-    const auth = await callApi(email, password);
+    const headers={};
+    const auth = await callApi({email, password},headers,'/api/user/login','POST',{});
+
     if (auth.status === 200) {
       localStorage.setItem('token', auth.data.data);
-
       this.props.history.push('/trainee');
     } else {
-      console.log('-------------56-----------------');
-
       values.openSnack('Error in Authentication', 'error');
       this.setState({buttonDisable: true, openProgress: false});
 
@@ -302,7 +299,7 @@ class Login extends React.Component {
                         (openProgress)
                         ?
 
-                      (<CircularProgress className={classes.progress} />)
+                      (<Progress size={20} />)
                         :
                         ''
                       }
