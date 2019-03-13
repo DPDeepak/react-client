@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import style from './style';
+import style from './styles';
 
 const SelectField = (props) => {
   const {
@@ -10,8 +10,9 @@ const SelectField = (props) => {
     <>
       <select value={defaultText} {...rest} style={style.base}>
         <option value={defaultText}>{defaultText}</option>
-        {
+        { (options.length)?
           options.map(option => <option key={option.value} value={option.label}>{option.label}</option>)
+          :''
         }
 
       </select>

@@ -4,13 +4,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddDialog from './components';
 import TraineeTable from './TraineeTable';
-import { trainees } from './data/trainees';
 import { column } from './data/column';
 import DeleteDialog from './components/DeleteDialog/DeleteDialog';
 import EditDialog from './components/EditDialog';
 import callApi from '../../lib/utils/api';
-import getDateFormatted from '../../lib/utils';
-import withLoaderAndMessage from '../../components/HOC';
 import { limit } from './data/constants';
 import { SnackbarConsumer } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
@@ -68,7 +65,7 @@ class TraineeList extends React.Component {
   }
 
   handleDeleteClose = () => {
-    const { page, count } = this.state
+    const { page } = this.state
     const previousPage = page - 1;
     this.setState({ deleteOpen: false, editOpen: false, page: previousPage }, () => (this.getData()));
   }

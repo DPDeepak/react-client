@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Match, Redirect, Switch, withRouter } from 'react-router-dom'
+import React from 'react';
+import { Route, Redirect, withRouter } from 'react-router-dom'
 import PrivateLayout from '../layouts/PrivateLayout'
 
 const PrivateRoutes = ({ component: Component, ...rest }) => {

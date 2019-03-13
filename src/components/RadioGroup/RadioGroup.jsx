@@ -7,15 +7,21 @@ const RadioGroup = (props) => {
   } = props;
   return (
     <>
-      {options.map(option => (
-        <div>
-          <label htmlFor={option.label}>
-            <input type="radio" value={option.label} name="disk" {...rest} key={option.label} />
+      {
+        (options.length) ?
+          options.map(option => (
+            <div>
+              <label htmlFor={option.label}>
+                <input type="radio" value={option.label} name="disk" {...rest} key={option.label} />
 
-            {option.label}
-          </label>
-        </div>
-      ))}
+                {option.label}
+              </label>
+            </div>
+          )
+          )
+      :
+       ''
+    }
       {error ? <p style={{ color: 'red' }}>{error}</p> : ''}
     </>
   );

@@ -2,12 +2,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import styles from './styles';
 
-const styles = theme => ({
-  progress: {
-    margin: theme.spacing.unit * 0.2,
-  },
-})
 
 const propTypes = {
   classes: PropTypes.objectOf.isRequired,

@@ -5,9 +5,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import green from '@material-ui/core/colors/green';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
+import styles from './styles';
+
 
 const SnackBarContext = React.createContext(() => console.log('----------SnackBar----'));
 const variantIcon = {
@@ -15,28 +16,6 @@ const variantIcon = {
   error: ErrorIcon,
 };
 
-const styles = theme => ({
-  close: {
-    padding: theme.spacing.unit / 2,
-  },
-  success: {
-    backgroundColor: green[600],
-  },
-  error: {
-    backgroundColor: theme.palette.error.dark,
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: theme.spacing.unit,
-  },
-  icon: {
-    fontSize: 20,
-  },
-});
 
 class SnackbarProvider extends React.Component {
   state = {

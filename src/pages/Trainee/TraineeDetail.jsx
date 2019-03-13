@@ -1,13 +1,9 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { Button, Card } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
-import Paper from '@material-ui/core/Paper';
 import { trainees } from './data/trainees';
 import getDateFormatted from '../../lib/utils';
 import NoMatch from '../NoMatch';
@@ -37,7 +33,6 @@ function MediaControlCard(props) {
       isFound = index;
     }
   });
-
 
   if (isFound !== -1) {
     return (

@@ -1,6 +1,6 @@
-const style = {
+const styles = {
   display: 'flex',
   flexDirection: 'column',
 };
 
-export default style;
+export default styles;
