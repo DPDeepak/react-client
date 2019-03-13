@@ -183,7 +183,7 @@ class AddDialogue extends Component {
   }
 
   render() {
-    const { open, classes } = this.props;
+    const { open } = this.props;
     const {
       name,
       email,

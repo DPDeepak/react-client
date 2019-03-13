@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TablePagination from '@material-ui/core/TablePagination';
-import { Button, IconButton } from '@material-ui/core';
+import {
+  withStyles,
+  IconButton,
+  TableRow,
+  TableHead,
+  TableCell,
+  TablePagination,
+  TableBody,
+  Table,
+  Paper,
+  TableSortLabel,
+} from '@material-ui/core';
 import withLoaderAndMessage from '../../components/HOC';
 
 
@@ -57,7 +59,7 @@ const SimpleTable = (props) => {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            {
+            {(column.length) ?
               column.map(col => (
                 <TableCell align={col.align}>
                   <TableSortLabel
@@ -69,39 +71,48 @@ const SimpleTable = (props) => {
                   </TableSortLabel>
                 </TableCell>
               ))
+              : ''
             }
             <TableCell />
 
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(row => (
-            <TableRow key={row.id} className={classes.row} hover>
+          {(data.length) ?
+            data.map(row => (
+              <TableRow key={row.id} className={classes.row} hover>
 
-              {column.map((col) => {
-                let value = row[col.field];
-                if (col.hasOwnProperty('format')) {
-                  const temp = col.format;
-                  value = temp(value);
+                {(column.length) ?
+                  column.map((col) => {
+                    let value = row[col.field];
+                    if (col.hasOwnProperty('format')) {
+                      const temp = col.format;
+                      value = temp(value);
+                    }
+                    return (
+
+                      <TableCell align={col.align} onClick={event => handleClick(event, row.id)}>
+                        {value}
+                      </TableCell>
+                    );
+                  })
+                  : ''
                 }
-                return (
 
-                  <TableCell align={col.align} onClick={event => handleClick(event, row.id)}>
-                    {value}
-                  </TableCell>
-                );
-              })
-              }
-
-              <TableCell>
-                {actions.map(obj => (
-                  <IconButton style={{ display: 'flex' }} onClick={event => obj.handler(event, row)}>
-                    {obj.icon}
-                  </IconButton>
-                ))}
-              </TableCell>
-            </TableRow>
-          ))}
+                <TableCell>
+                  {(actions.length) ?
+                    actions.map(obj => (
+                      <IconButton style={{ display: 'flex' }} onClick={event => obj.handler(event, row)}>
+                        {obj.icon}
+                      </IconButton>
+                    ))
+                    : ''
+                  }
+                </TableCell>
+              </TableRow>
+            ))
+            : ''
+          }
         </TableBody>
       </Table>
       {

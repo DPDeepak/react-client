@@ -2,13 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-
-const styles = theme => ({
-  div: {
-    marginTop: theme.spacing.unit,
-    padding: `${theme.spacing.unit * 6}px 0`,
-  },
-});
+import styles from './styles';
 
 const NoMatch = (props) => {
   const { classes, heading, message } = props;

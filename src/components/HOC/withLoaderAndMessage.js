@@ -4,7 +4,7 @@ import NoMatch from '../../pages/NoMatch';
 
 const withLoaderAndMessage = (WrappedComponent) => {
   const HOC = (props) => {
-    const { loader, dataLength, count } = props;
+    const { loader, count } = props;
     return (
 
       <>

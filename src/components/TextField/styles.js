@@ -1,13 +1,12 @@
-const style = {
-  base: {
+const styles = {
+  basic: {
     width: '80%',
     margin: '10px',
     padding: '5px',
     borderRadius: '5px',
   },
-  error: {
+  errorstyle: {
     borderColor: 'red',
   },
 };
-
-export default style;
+export default styles;

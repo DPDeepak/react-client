@@ -15,17 +15,7 @@ import {
 import { SnackbarConsumer } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 import callApi from '../../../../lib/utils/api';
 import Progress from '../../../../components/Progress';
-
-const styles = theme => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  error: {
-    color: 'red',
-    margin: 10,
-  },
-});
+import styles from './styles';
 
 const propTypes = {
   open: PropTypes.bool,
@@ -62,7 +52,7 @@ class EditDialog extends React.Component {
   handleSubmit = async (event, values) => {
     event.stopPropagation();
     const { traineeData } = this.state;
-    const { close, detail } = this.props;
+    const { close } = this.props;
     this.setState({ buttonStatus: true, spinner: true, startSpin: true });
     const data = {
       id: traineeData._id,

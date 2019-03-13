@@ -7,10 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
-import { Trainee } from '../../../pages/Trainee';
-import InputDemo from '../../../pages/InputDemo';
-import ChildrenDemo from '../../../pages/ChildrenDemo';
-import TextField from '../../../components';
 
 const styles = {
   root: {

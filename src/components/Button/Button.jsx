@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Style from './style';
+import Style from './styles';
 
 const Button = (props) => {
   const { disabled, color, ...rest } = props;

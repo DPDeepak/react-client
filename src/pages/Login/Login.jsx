@@ -12,48 +12,10 @@ import * as yup from 'yup';
 import {
   withRouter,
 } from 'react-router-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import callApi from '../../lib/utils/api';
 import { SnackbarConsumer } from '../../contexts/SnackBarProvider/SnackBarProvider';
 import Progress from '../../components/Progress';
-
-const styles = theme => ({
-  main: {
-    width: 'auto',
-    display: 'block',
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-  progress: {
-    margin: theme.spacing.unit,
-  },
-  paper: {
-    marginTop: theme.spacing.unit * 8,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-  },
-  avatar: {
-    margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing.unit,
-  },
-  submit: {
-    marginTop: theme.spacing.unit * 3,
-  },
-  error: {
-    color: 'red',
-  },
-});
+import styles from './styles';
 
 const propTypes = {
   classes: PropTypes.objectOf.isRequired,
@@ -63,7 +25,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      buttonDisable:false,
+      buttonDisable: false,
       showPassword: false,
       form: {
         password: '',
@@ -160,17 +122,17 @@ class Login extends React.Component {
 
   handleAuth = async (event, values) => {
     event.preventDefault();
-    this.setState({buttonDisable: false, openProgress: true});
+    this.setState({ buttonDisable: false, openProgress: true });
     const { email, password } = this.state;
-    const headers={};
-    const auth = await callApi({email, password},headers,'/api/user/login','POST',{});
+    const headers = {};
+    const auth = await callApi({ email, password }, headers, '/api/user/login', 'POST', {});
 
     if (auth.status === 200) {
       localStorage.setItem('token', auth.data.data);
       this.props.history.push('/trainee');
     } else {
       values.openSnack('Error in Authentication', 'error');
-      this.setState({buttonDisable: true, openProgress: false});
+      this.setState({ buttonDisable: true, openProgress: false });
 
     }
   }
@@ -295,14 +257,14 @@ class Login extends React.Component {
                     color="primary"
                     className={classes.submit}
                   >
-                                        {
-                        (openProgress)
+                    {
+                      (openProgress)
                         ?
 
-                      (<Progress size={20} />)
+                        (<Progress size={20} />)
                         :
                         ''
-                      }
+                    }
                     SIGN IN
                   </Button>
                 )

@@ -104,7 +104,7 @@ class InputDemo extends Component {
   render() {
 
     const {
-      sport, hasError, Err, name
+      sport, Err, name
     } = this.state;
 
     let result = 0;
