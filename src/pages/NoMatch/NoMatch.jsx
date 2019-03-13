@@ -11,15 +11,15 @@ const styles = theme => ({
 });
 
 function NoMatch(props) {
-  const { classes } = props;
+  const { classes, heading, message } = props;
   return (
     <>
       <div className={classes.div}>
         <Typography variant="h3" align="center" gutterBottom>
-          Not Found
+          {heading}
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Seems like the page you are looking after does not exist.
+          {message}
         </Typography>
       </div>
     </>

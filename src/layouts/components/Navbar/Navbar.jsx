@@ -28,6 +28,10 @@ const styles = {
   },
 };
 
+const handleLogout =() => {
+  localStorage.removeItem('token')
+}
+
 function Navbar(props) {
   const { classes, children } = props;
   return (
@@ -49,7 +53,9 @@ function Navbar(props) {
           <Link color="inherit" component={RouterLink} to="/children-demo">
             <Button color="inherit">Children Demo</Button>
           </Link>
-          <Button color="inherit" className={classes.loginButton}>Logout</Button>
+          <Link color="inherit" component={RouterLink} to="/login">
+          <Button color="inherit" className={classes.loginButton} onClick={handleLogout} >Logout</Button>
+          </Link>
         </Toolbar>
       </AppBar>
       {children}

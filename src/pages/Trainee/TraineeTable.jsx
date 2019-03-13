@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -8,6 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TablePagination from '@material-ui/core/TablePagination';
+import { Button, IconButton } from '@material-ui/core';
+import withLoaderAndMessage from '../../components/HOC';
 
 
 const styles = theme => ({
@@ -28,23 +31,26 @@ const styles = theme => ({
 });
 
 const SimpleTable = (props) => {
-
   const createSortHandler = (event, field, order) => {
     event.preventDefault();
-    console.log(',,,,', field);
     const { onSort } = props;
     onSort(field, order);
-
   };
 
   const handleClick = (event, id) => {
     event.preventDefault();
     const { onSelect } = props;
-    console.log(';;;;;;;', id);
     onSelect(id);
-  }
+  };
 
-  const { classes, data, column, onSelect, onSort, order, act } = props;
+  const handleChangePage = (event, page) => {
+    const { onChangePage } = props;
+    onChangePage(page);
+  };
+
+  const {
+    classes, data, column, order, act, page, count, rowsPerPage, actions,
+  } = props;
 
   return (
     <Paper className={classes.root}>
@@ -57,13 +63,15 @@ const SimpleTable = (props) => {
                   <TableSortLabel
                     active={act === col.label}
                     direction={order}
-                    onClick={(event) => createSortHandler(event, col.label, order)}
+                    onClick={event => createSortHandler(event, col.label, order)}
                   >
                     {col.label || col.field}
                   </TableSortLabel>
                 </TableCell>
               ))
             }
+            <TableCell />
+
           </TableRow>
         </TableHead>
         <TableBody>
@@ -77,24 +85,49 @@ const SimpleTable = (props) => {
                   value = temp(value);
                 }
                 return (
-                  <TableCell align={col.align} onClick={event => handleClick(event, row.id)}>{value}</TableCell>
-                  // <Link to={`/trainee/${trainee.id}`}>{trainee.name}</Link>
 
+                  <TableCell align={col.align} onClick={event => handleClick(event, row.id)}>
+                    {value}
+                  </TableCell>
                 );
               })
-                // {/* <TableCell>{row.email}</TableCell>
-                // <TableCell align="right">{row.format}</TableCell> */}
               }
+
+              <TableCell>
+                {actions.map(obj => (
+                  <IconButton style={{ display: 'flex' }} onClick={event => obj.handler(event, row)}>
+                    {obj.icon}
+                  </IconButton>
+                ))}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      {
+        (
+          <TablePagination
+            rowsPerPageOptions={[]}
+            component="div"
+            count={count}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={handleChangePage}
+          />
+        )
+      }
     </Paper>
   );
-}
+};
 
 SimpleTable.propTypes = {
   classes: PropTypes.objectOf.isRequired,
 };
 
-export default withStyles(styles)(SimpleTable);
+export default withStyles(styles)(withLoaderAndMessage(SimpleTable));
