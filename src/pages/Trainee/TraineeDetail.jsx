@@ -38,6 +38,7 @@ function MediaControlCard(props) {
     }
   });
 
+
   if (isFound !== -1) {
     return (
       <>
@@ -66,7 +67,7 @@ function MediaControlCard(props) {
       </>
     );
   }
-  return <NoMatch />;
+  return <NoMatch/>;
 }
 
 MediaControlCard.propTypes = {

@@ -2,8 +2,6 @@ import axios from 'axios';
 
 const callApi = async (data, headers, url,method,params) => {
   try {
-    console.log('==>');
-
     const response = await axios({
       method,
       baseURL: 'https://express-training.herokuapp.com',

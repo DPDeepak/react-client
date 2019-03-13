@@ -80,12 +80,6 @@ class EditDialog extends React.Component {
       this.setState({ spinner: false, startSpin: false });
       close(false);
     }
-    console.log(result);
-
-    console.log('Traineedata',traineeData);
-    console.log('detail',detail);
-
-
 
   };
 

@@ -27,8 +27,6 @@ class DeleteDialog extends React.Component {
   showDetail = async (detail, openSnack) => {
     this.setState({ spinner: true, startSpin: true });
     const { close, count, skip, closeSuccess } = this.props;
-    console.log(count, skip);
-
     const params = {};
     const result = await callApi({}, { Authorization: localStorage.token }, `/api/trainee/${detail.originalId}`, 'DELETE', params)
     if (result.status === 200) {

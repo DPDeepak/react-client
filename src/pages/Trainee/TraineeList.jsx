@@ -69,16 +69,12 @@ class TraineeList extends React.Component {
 
   handleDeleteClose = () => {
     const { page, count } = this.state
-    console.log('-----________________', count);
-
     const previousPage = page - 1;
-
     this.setState({ deleteOpen: false, editOpen: false, page: previousPage }, () => (this.getData()));
   }
 
   handleSubmit = (form) => {
     this.setState({ open: false });
-    console.log(form);
   };
 
   handleSelect = (id) => {
