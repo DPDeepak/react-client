@@ -3,16 +3,19 @@ import { BrowserRouter as Router, Route, Link, Match, Redirect, Switch, withRout
 import PrivateLayout from '../layouts/PrivateLayout'
 
 const PrivateRoutes = ({ component: Component, ...rest }) => {
+
   if(localStorage.getItem('token'))
   {
   return (
     <Route
       {...rest}
-      render={matchProps => (
+      render={matchProps => {
+        return (
         <PrivateLayout>
-          <Component {...matchProps} />
+          <Component {...matchProps} {...rest}/>
         </PrivateLayout>
       )}
+        }
     />
   );
 }

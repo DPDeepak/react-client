@@ -10,16 +10,16 @@ const styles = theme => ({
   },
 });
 
-function NoMatch(props) {
+const NoMatch = (props) => {
   const { classes, heading, message } = props;
   return (
     <>
       <div className={classes.div}>
         <Typography variant="h3" align="center" gutterBottom>
-          {heading}
+          {heading || "Not Found"}
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          {message}
+          {message || "Seems like the page you are looking after does not exist." }
         </Typography>
       </div>
     </>
