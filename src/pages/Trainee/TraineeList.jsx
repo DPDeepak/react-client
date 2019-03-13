@@ -14,7 +14,6 @@ import withLoaderAndMessage from '../../components/HOC';
 import { limit } from './data/constants';
 import { SnackbarConsumer } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
-
 class TraineeList extends React.Component {
   state = {
     open: false,
