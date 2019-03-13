@@ -37,7 +37,6 @@ function MediaControlCard(props) {
       isFound = index;
     }
   });
-  console.log('---------40---', isFound);
 
 
   if (isFound !== -1) {
