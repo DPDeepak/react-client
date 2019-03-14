@@ -34,30 +34,29 @@ const defaultProps = {
 class EditDialog extends React.Component {
   constructor(props) {
     super(props);
+    const { detail } = props;
     this.state = {
       buttonStatus: true,
-      traineeData: '',
+      name:detail.name,
+      email:detail.email,
       startSpin: false,
       spinner: false,
     };
   }
 
   handleChange = field => (event) => {
-    const { detail } = this.props;
-    const unchangedData=detail;
-    unchangedData[field] = event.target.value;
-    this.setState({ buttonStatus: false, traineeData: unchangedData });
+    this.setState({ [field]: event.target.value, buttonStatus: false});
   };
 
   handleSubmit = async (event, values) => {
     event.stopPropagation();
-    const { traineeData } = this.state;
-    const { close } = this.props;
+    const { name, email } = this.state;
+    const { close, detail } = this.props;
     this.setState({ buttonStatus: true, spinner: true, startSpin: true });
     const data = {
-      id: traineeData._id,
-      name: traineeData.name,
-      email: traineeData.email,
+      id: detail._id,
+      name,
+      email,
     }
     const params = {};
     const result = await callApi(data, { Authorization: localStorage.token }, '/api/trainee', 'PUT', params)
@@ -77,7 +76,7 @@ class EditDialog extends React.Component {
     const {
       open, close, detail,
     } = this.props;
-    const { buttonStatus, startSpin, spinner } = this.state;
+    const { buttonStatus, startSpin, spinner, name, email } = this.state;
     return (
       <>
         <Dialog
@@ -96,7 +95,7 @@ class EditDialog extends React.Component {
               fullWidth
               id="outlined-name"
               label="Name"
-              value={detail.name}
+              value={name}
               // className={classes.textField}
               margin="normal"
               variant="outlined"
@@ -112,7 +111,7 @@ class EditDialog extends React.Component {
               label="Email Address"
               type="email"
               name="email"
-              value={detail.email}
+              value={email}
               autoComplete="email"
               margin="normal"
               variant="outlined"

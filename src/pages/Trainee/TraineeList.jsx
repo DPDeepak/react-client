@@ -120,7 +120,7 @@ class TraineeList extends React.Component {
             </Button>
           </div>
           <AddDialog open={open} onClose={this.handleClose} onSubmit={this.handleSubmit} />
-          <EditDialog open={editOpen} close={this.handleDialogClose} detail={traineeDetail} />
+          {editOpen && traineeDetail && <EditDialog open={editOpen} close={this.handleDialogClose} detail={traineeDetail} />}
           <DeleteDialog open={deleteOpen} close={this.handleDialogClose} closeSuccess={this.handleDeleteClose} detail={traineeDetail} count={count} skip={skip} />
           <TraineeTable
             data={records}
